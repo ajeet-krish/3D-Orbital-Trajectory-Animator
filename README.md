@@ -6,6 +6,12 @@
 
 Interactive 3D visualization and animation of Keplerian orbits using the two-body solution, built with Python. 
 
+## View the Full Report
+
+For an interactive, polished version with code folding, view the [full report](orbit.html).
+
+---
+
 ## Demo
 
 ![Multi-Orbit](outputs/multi_orbit.gif)

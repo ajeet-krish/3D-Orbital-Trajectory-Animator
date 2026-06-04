@@ -23,5 +23,4 @@ wheels/
 outputs/*.gif
 
 # Quarto generated output
-orbit.html
 orbit_files/
