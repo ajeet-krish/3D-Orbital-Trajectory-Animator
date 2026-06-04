@@ -41,25 +41,6 @@ a:hover {
   color: var(--dracula-pink);
 }
 
-/* Sidebar / TOC */
-.sidebar, #TOC, .toc-active {
-  background-color: #21222c;
-  border-color: var(--dracula-current);
-}
-.sidebar nav > ul > li > a,
-#TOC a {
-  color: var(--dracula-comment);
-}
-.sidebar nav > ul > li > a:hover,
-#TOC a:hover {
-  color: var(--dracula-pink);
-}
-.sidebar nav > ul > li > a.active,
-#TOC .active > a {
-  color: var(--dracula-cyan);
-  border-left-color: var(--dracula-pink);
-}
-
 /* Code blocks */
 pre, code {
   background-color: #21222c;
