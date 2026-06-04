@@ -18,3 +18,10 @@ wheels/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Generated GIFs
+outputs/*.gif
+
+# Quarto generated output
+orbit.html
+orbit_files/

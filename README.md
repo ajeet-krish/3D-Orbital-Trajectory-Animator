@@ -33,9 +33,9 @@ Interactive 3D visualization and animation of Keplerian orbits using the two-bod
 - **3D visualization** with wireframe Earth, coordinate axes, and orbital element annotations
 - **Animated satellite motion** with fading comet trail and real-time velocity vector
 - **Multiple orbit types**: overlay LEO, GEO, Polar, and Molniya orbits simultaneously
-- **Interactive parameter explorer**: Jupyter widgets to tweak $a$, $e$, $i$, $\Omega$, $\omega$ in real time
+- **Interactive parameter explorer**: tweak $a$, $e$, $i$, $\Omega$, $\omega$ in real time (Jupyter only)
 - **GIF export**: high-quality animations ready for portfolio embedding
-- **Quarto-ready notebook**: markdown cells with LaTeX physics explanations
+- **Quarto-ready notebook**: standalone HTML with table of contents, code folding, and syntax highlighting
 
 ## How It Works
 
@@ -74,26 +74,29 @@ quarto render orbit.ipynb
 ## Project Structure
 
 ```
-├── animator.ipynb     # Main notebook (16 cells)
-├── outputs/           # Generated GIFs
+├── orbit.ipynb           # Main notebook (20 cells + YAML frontmatter)
+├── orbit.css             # Custom theme for Quarto HTML output
+├── outputs/              # Generated animation GIFs
 │   ├── leo_animated.gif
 │   ├── molniya.gif
 │   └── multi_orbit.gif
-├── pyproject.toml     # Dependencies & project config
-├── uv.lock            # Lockfile
+├── pyproject.toml        # Dependencies & project config
+├── uv.lock               # Lockfile
+├── .python-version       # Python version pin
 └── README.md
 ```
 
 ## Notebook Contents
 
-| Cell | Content |
-|------|---------|
-| 1-5 | Setup: imports, Earth wireframe, orbit computation, animation factory |
-| 6-8 | LEO orbit: static annotated plot → animation → GIF |
-| 9-11 | Multi-orbit comparison: LEO, GEO, Polar, Molniya |
-| 12-13 | Molniya deep dive: critical inclination, apogee dwell |
-| 14-15 | Interactive parameter explorer with ipywidgets |
-| 16 | Summary & references |
+| Cells | Content |
+|-------|---------|
+| 0 | YAML frontmatter (Quarto config: TOC, code-fold, dark theme) |
+| 1-5 | Setup: imports, Dracula rcParams, Earth wireframe, orbit computation, animation factory |
+| 6-9 | LEO orbit: static annotated plot → animation + GIF display |
+| 10-13 | Multi-orbit comparison: LEO, GEO, Polar, Molniya → animation + GIF display |
+| 14-16 | Molniya deep dive: critical inclination, apogee dwell → animation + GIF display |
+| 17-18 | Interactive parameter explorer (ipywidgets — Jupyter only) |
+| 19 | Summary & references |
 
 ## References
 
