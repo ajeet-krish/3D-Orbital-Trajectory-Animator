@@ -19,8 +19,5 @@ wheels/
 # Jupyter
 .ipynb_checkpoints/
 
-# Generated GIFs
-outputs/*.gif
-
 # Quarto generated output
 orbit_files/
