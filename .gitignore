@@ -19,5 +19,4 @@ wheels/
 # Jupyter
 .ipynb_checkpoints/
 
-# Quarto generated output
-orbit_files/
+
