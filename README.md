@@ -3,12 +3,13 @@
 [![Python](https://img.shields.io/badge/Python-3.14-blue)](#)
 [![PyAstronomy](https://img.shields.io/badge/PyAstronomy-0.25-orange)](#)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3D-orange)](#)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://ajeet-krish.github.io/3D-Orbital-Trajectory-Animator/)
 
 Interactive 3D visualization and animation of Keplerian orbits using the two-body solution, built with Python. 
 
 ## View the Full Report
 
-For an interactive, polished version with code folding, view the [full report](orbit.html).
+View the [interactive report](https://ajeet-krish.github.io/3D-Orbital-Trajectory-Animator/) with code folding and syntax highlighting.
 
 ---
 
@@ -68,20 +69,24 @@ uv sync
 ### Running the Notebook
 
 ```bash
-uv run jupyter notebook orbit.ipynb
+uv run jupyter notebook src/orbit.ipynb
 ```
 
 Or with Quarto:
 
 ```bash
-quarto render orbit.ipynb
+quarto render src/orbit.ipynb
 ```
 
 ## Project Structure
 
 ```
-├── orbit.ipynb           # Main notebook (20 cells + YAML frontmatter)
-├── orbit.css             # Custom theme for Quarto HTML output
+├── docs/                 # GitHub Pages site
+│   ├── index.html        # Interactive report
+│   ├── orbit.css         # Custom Quarto theme
+│   └── orbit_files/      # Assets (JS, CSS, figures)
+├── src/
+│   └── orbit.ipynb       # Main notebook
 ├── outputs/              # Generated animation GIFs
 │   ├── leo_animated.gif
 │   ├── molniya.gif
