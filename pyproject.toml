@@ -1,7 +1,7 @@
 [project]
 name = "3d-orbital-trajectory-animator"
 version = "0.1.0"
-description = "Add your description here"
+description = "3D Keplerian orbit visualizations with Python and PyAstronomy"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -12,3 +12,6 @@ dependencies = [
     "pyastronomy>=0.25.0",
     "scipy>=1.17.1",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]

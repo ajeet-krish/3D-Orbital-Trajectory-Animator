@@ -5,113 +5,131 @@
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3D-orange)](#)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://ajeet-krish.github.io/3D-Orbital-Trajectory-Animator/)
 
-Interactive 3D visualization and animation of Keplerian orbits using the two-body solution, built with Python. 
+3D Keplerian orbit visualizations and animations using the two-body solution. Covers LEO, GEO, Polar, Molniya, Hohmann transfers, J2 precession, and ground track projection.
 
-## View the Full Report
-
-View the [interactive report](https://ajeet-krish.github.io/3D-Orbital-Trajectory-Animator/) with code folding and syntax highlighting.
+**Live site:** https://ajeet-krish.github.io/3D-Orbital-Trajectory-Animator/
 
 ---
 
-## Demo
+## Animations
 
-![Multi-Orbit](outputs/multi_orbit.gif)
-  *Four orbit regimes simultaneously: LEO, GEO, Polar, Molniya*
+| GIF | What it shows |
+|-----|---------------|
+| ![multi_orbit](outputs/multi_orbit.gif) | Four orbit regimes animated together: LEO, GEO, Polar, Molniya |
+| ![hohmann](outputs/hohmann.gif) | Two-burn Hohmann transfer between circular orbits |
+| ![leo_animated](outputs/leo_animated.gif) | LEO with velocity vector and fading trail |
+| ![molniya](outputs/molniya.gif) | Molniya orbit (e=0.74, i=63.4°) with apogee dwell |
+| ![j2_precession](outputs/j2_precession.gif) | RAAN precession and apsidal precession side by side |
+| ![ground_track](outputs/ground_track.gif) | Ground tracks projected onto a 2D map with 3D view |
+| ![parameter_sweep](outputs/parameter_sweep.gif) | Eccentricity and inclination sweep |
 
-![Molniya Orbit](outputs/molniya.gif)
-  *Highly elliptical Molniya orbit (e=0.74, i=63.4°), apogee dwell over northern hemisphere*
+## Project Structure
 
-![LEO Animated](outputs/leo_animated.gif)
-  *Low Earth Orbit with velocity vector and comet trail*
-
-## Engineering Concepts
-
-| Concept | Description |
-|---------|-------------|
-| Two-Body Problem | Analytical solution via Kepler's equation |
-| Keplerian Elements | Semi-major axis, eccentricity, inclination, RAAN, argument of periapsis |
-| Critical Inclination | Molniya orbit at 63.4° eliminates apsidal precession |
-| Apogee Dwell | Satellite slows near apogee (Kepler's second law) |
-| Vis-Viva Equation | $v^2 = \mu(2/r - 1/a)$ - velocity at any orbital radius |
-| Orbit Regimes | LEO, GEO, Polar, and Molniya - each with distinct mission profiles |
-
-## Features
-
-- **3D visualization** with wireframe Earth, coordinate axes, and orbital element annotations
-- **Animated satellite motion** with fading comet trail and real-time velocity vector
-- **Multiple orbit types**: overlay LEO, GEO, Polar, and Molniya orbits simultaneously
-- **Interactive parameter explorer**: tweak $a$, $e$, $i$, $\Omega$, $\omega$ in real time (Jupyter only)
-- **GIF export**: high-quality animations ready for portfolio embedding
-- **Quarto-ready notebook**: standalone HTML with table of contents, code folding, and syntax highlighting
+```
+├── docs/                    # GitHub Pages site
+│   ├── index.html           # Single-page portfolio (custom HTML)
+│   ├── custom.css           # Space-themed dark stylesheet
+│   └── outputs/             # GIFs for the site (copied from project root)
+├── src/
+│   ├── orbital/             # Python package — core orbital mechanics
+│   │   ├── core.py          #   compute_orbit(), draw_earth(), setup_3d_axes()
+│   │   ├── animate.py       #   All animate_*() functions
+│   │   ├── arrow3d.py       #   Arrow3D for velocity vectors
+│   │   ├── config.py        #   orbits_config, apply_dark_theme()
+│   │   ├── sweep.py         #   Parameter sweep (standalone runner)
+│   │   └── interactive.py   #   ipywidgets explorer (notebook use)
+│   └── orbit.ipynb          # Original notebook (kept for experimentation)
+├── scripts/                 # Standalone GIF generators (import orbital)
+│   ├── hohmann.py
+│   ├── j2_precession.py
+│   ├── ground_track.py
+│   ├── leo.py
+│   ├── molniya.py
+│   └── multi_orbit.py
+├── outputs/                 # Generated GIFs
+├── pyproject.toml           # Dependencies & package config
+├── uv.lock                  # Lockfile
+├── .python-version          # Python version
+├── AGENTS.md                # Project guide for AI coding assistants
+└── README.md
+```
 
 ## How It Works
 
-The notebook uses PyAstronomy's `KeplerEllipse` class to solve Kepler's equation and generate position vectors. Matplotlib's `FuncAnimation` iterates through the position array frame-by-frame, with `PillowWriter` exporting the result as a GIF.
+The `orbital` package provides:
 
-```python
-ke = pyasl.KeplerEllipse(a=1.0, per=1.0, e=0.74, i=63.4, Omega=0.0, w=270.0)
-pos = ke.xyzPos(np.linspace(0, 4, 400))
-```
+- **`core.py`** — `compute_orbit()` wraps `PyAstronomy.KeplerEllipse` to solve Kepler's equation and return 3D position arrays. `draw_earth()` plots a wireframe Earth. `setup_3d_axes()` creates consistent dark-themed 3D axes.
+- **`animate.py`** — `FuncAnimation`-based animation functions that iterate through position arrays frame by frame, drawing satellite dots and fading trails.
+- **`config.py`** — Shared orbit configurations and matplotlib dark theme.
+
+Each script in `scripts/` imports from the package, calls the relevant function, and saves a GIF via `PillowWriter`.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python ≥ 3.14
+- Python >= 3.14
 - uv (recommended) or pip
 
 ### Installation
 
 ```bash
 uv sync
+uv pip install -e .
 ```
 
-### Running the Notebook
+### Regenerate a GIF
+
+```bash
+uv run python3 scripts/hohmann.py
+```
+
+### Regenerate All GIFs
+
+```bash
+for script in scripts/*.py; do uv run python3 "$script"; done
+```
+
+### Run the Notebook
 
 ```bash
 uv run jupyter notebook src/orbit.ipynb
 ```
 
-Or with Quarto:
+## Package API
 
-```bash
-quarto render src/orbit.ipynb
+```python
+from orbital.core import compute_orbit, draw_earth, setup_3d_axes
+from orbital.animate import animate_leo_with_velocity, animate_molniya
+from orbital.config import orbits_config, apply_dark_theme
+
+apply_dark_theme()
+pos, t, ke = compute_orbit(a=1.0, e=0.74, i=63.4, Omega=0.0, w=270.0)
+
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection="3d")
+setup_3d_axes(ax, pos)
+draw_earth(ax)
+ax.plot(pos[:, 0], pos[:, 1], pos[:, 2], color="#8be9fd", linewidth=1.5)
+plt.show()
 ```
 
-## Project Structure
+## Engineering Concepts Covered
 
-```
-├── docs/                 # GitHub Pages site
-│   ├── index.html        # Interactive report
-│   ├── orbit.css         # Custom Quarto theme
-│   └── orbit_files/      # Assets (JS, CSS, figures)
-├── src/
-│   └── orbit.ipynb       # Main notebook
-├── outputs/              # Generated animation GIFs
-│   ├── leo_animated.gif
-│   ├── molniya.gif
-│   └── multi_orbit.gif
-├── pyproject.toml        # Dependencies & project config
-├── uv.lock               # Lockfile
-├── .python-version       # Python version pin
-└── README.md
-```
-
-## Notebook Contents
-
-| Cells | Content |
-|-------|---------|
-| 0 | YAML frontmatter (Quarto config: TOC, code-fold, dark theme) |
-| 1-5 | Setup: imports, Dracula rcParams, Earth wireframe, orbit computation, animation factory |
-| 6-9 | LEO orbit: static annotated plot → animation + GIF display |
-| 10-13 | Multi-orbit comparison: LEO, GEO, Polar, Molniya → animation + GIF display |
-| 14-16 | Molniya deep dive: critical inclination, apogee dwell → animation + GIF display |
-| 17-18 | Interactive parameter explorer (ipywidgets — Jupyter only) |
-| 19 | Summary & references |
+| Concept | Section | Description |
+|---------|---------|-------------|
+| Two-Body Problem | Theory | Newton's law → Kepler's equation → conic sections |
+| Keplerian Elements | Theory | a, e, i, Omega, w, nu — full orbit parameterization |
+| Vis-Viva Equation | Theory | v^2 = mu(2/r - 1/a) — velocity at any radius |
+| Critical Inclination | Molniya | i = 63.4° eliminates J2 apsidal drift |
+| Apogee Dwell | Molniya | Kepler's second law → slow motion at apogee |
+| Hohmann Transfer | Hohmann | Fuel-optimal two-burn orbit raising |
+| J2 Precession | Molniya | RAAN drift and apsidal precession from Earth's bulge |
+| Ground Tracks | Regimes | Latitude/longitude mapping with Earth rotation |
+| Orbit Regimes | Regimes | LEO, GEO, Polar, Molniya — mission-specific design |
 
 ## References
 
 - [PyAstronomy Documentation](https://pyastronomy.readthedocs.io/)
 - Vallado, D. A. — *Fundamentals of Astrodynamics and Applications*
 - Bate, R. R., Mueller, D. D., & White, J. E. — *Fundamentals of Astrodynamics*
-- [Matplotlib 3D Animation](https://matplotlib.org/stable/gallery/index.html#animation)
